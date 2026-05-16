@@ -35,32 +35,80 @@ docker compose up -d
 
 Todos os serviços são acessíveis através de [http://localhost:8080](http://localhost:8080).
 
-| Serviço | URL base | Swagger |
-|---|---|---|
-| billing | `/billing` | `/billing/swagger` |
-| execution | `/execution` | `/execution/swagger` |
-| identity | `/identity` | `/identity/swagger` |
+| Serviço     | URL base       | Swagger                |
+|-------------|----------------|------------------------|
+| billing     | `/billing`     | `/billing/swagger`     |
+| execution   | `/execution`   | `/execution/swagger`   |
+| identity    | `/identity`    | `/identity/swagger`    |
 | work-orders | `/work-orders` | `/work-orders/swagger` |
 
 ## Ferramentas
 
-| Ferramenta | URL | Descrição |
-|---|---|---|
-| DynamoDB Admin | [http://localhost:8082](http://localhost:8082) | Interface para inspecionar tabelas DynamoDB |
-| Mailpit | [http://localhost:8081](http://localhost:8081) | Interface para inspecionar e-mails enviados pelos serviços |
+| Ferramenta     | URL                                            | Descrição                                                  |
+|----------------|------------------------------------------------|------------------------------------------------------------|
+| Mailpit        | [http://localhost:8081](http://localhost:8081) | Interface para inspecionar e-mails enviados pelos serviços |
+| DynamoDB Admin | [http://localhost:8082](http://localhost:8082) | Interface para inspecionar tabelas DynamoDB                |
+
+## Mock de microsserviços (WireMock)
+
+Permite simular as respostas dos outros serviços a partir de arquivos JSON.
+
+### Iniciando o servidor de mocks
+
+```powershell
+.\start-wiremock.ps1
+```
+
+O servidor sobe na porta `9091` e carrega automaticamente todos os arquivos da pasta `wiremock/`.
+
+### Adicionando mapeamentos
+
+Crie arquivos `.json` dentro da pasta `wiremock/`. Cada arquivo pode conter um ou mais stubs agrupados sob a chave `mappings`.
+
+Exemplo — simulando o endpoint `GET /identity/users/{id}`:
+
+```json
+{
+  "mappings": [
+    {
+      "name": "GET /identity/users/:id",
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/identity/users/[^/]+"
+      },
+      "response": {
+        "status": 200,
+        "headers": { "Content-Type": "application/json" },
+        "jsonBody": {
+          "id": "00000000-0000-0000-0000-000000000001",
+          "name": "Mecânico Teste",
+          "cpfNumber": "12345678901",
+          "role": "Mechanic"
+        }
+      }
+    }
+  ]
+}
+```
+
+Salve o arquivo em `wiremock/identity.json` e reinicie o servidor para que o novo mapeamento seja carregado. A convenção adotada é um arquivo por microsserviço simulado.
+
+A interface administrativa em [http://localhost:9091/__admin/mappings](http://localhost:9091/__admin/mappings) lista todos os stubs ativos e permite inspecioná-los sem reiniciar o container.
 
 ## Estrutura do projeto
 
 ```plain
 ├── docker-compose.yml
 ├── init.ps1
+├── start-wiremock.ps1   # inicia o servidor WireMock com os mapeamentos locais
 ├── services.psd1        # lista de repositórios e configurações
 ├── local.psd1           # configurações locais, gerado pelo init.ps1
 ├── .env                 # variáveis de ambiente, gerado pelo init.ps1
 ├── localstack/          # scripts de inicialização do LocalStack
-└── nginx/
-    ├── nginx.conf
-    └── index.html
+├── nginx/
+│   ├── nginx.conf
+│   └── index.html
+└── wiremock/            # mapeamentos de stubs, um arquivo por microsserviço
 ```
 
 ## Links úteis

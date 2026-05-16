@@ -1,0 +1,123 @@
+{
+  "mappings": [
+    {
+      "priority": 1,
+      "name": "GET /work-orders/work-orders/:id",
+      "request": {
+        "method": "GET",
+        "urlPath": "/work-orders/work-orders/e7a2f914-3c50-4d1b-a8e3-1d9b7c02f561"
+      },
+      "response": {
+        "status": 200,
+        "headers": { "Content-Type": "application/json" },
+        "jsonBody": {
+          "id": "e7a2f914-3c50-4d1b-a8e3-1d9b7c02f561",
+          "accessKey": "WO-2026-00001",
+          "status": "Received",
+          "creationDate": "2026-05-16T10:00:00Z",
+          "lastUpdate": null,
+          "customerId": "a3f1d62e-9c84-4b17-bf90-2e56c3a07d48",
+          "vehicleId": "b5c3e821-7f4a-4e2d-9d16-3a8f50c1d742",
+          "reportedProblem": "Barulho ao frear",
+          "observations": null,
+          "products": [],
+          "serviceCatalogIds": []
+        }
+      }
+    },
+    {
+      "priority": 10,
+      "name": "GET /work-orders/work-orders/:id - not found",
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/work-orders/work-orders/[^/]+"
+      },
+      "response": {
+        "status": 404,
+        "headers": { "Content-Type": "application/json" },
+        "jsonBody": {
+          "type": "https://tools.ietf.org/html/rfc9110#section-15.5.5",
+          "title": "Not Found",
+          "status": 404
+        }
+      }
+    },
+    {
+      "priority": 1,
+      "name": "GET /work-orders/customers/:id",
+      "request": {
+        "method": "GET",
+        "urlPath": "/work-orders/customers/a3f1d62e-9c84-4b17-bf90-2e56c3a07d48"
+      },
+      "response": {
+        "status": 200,
+        "headers": { "Content-Type": "application/json" },
+        "jsonBody": {
+          "id": "a3f1d62e-9c84-4b17-bf90-2e56c3a07d48",
+          "name": "Customer User",
+          "email": "customer@mechanics.com",
+          "document": {
+            "type": "Cpf",
+            "number": "17625318010"
+          }
+        }
+      }
+    },
+    {
+      "priority": 10,
+      "name": "GET /work-orders/customers/:id - not found",
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/work-orders/customers/[^/]+"
+      },
+      "response": {
+        "status": 404,
+        "headers": { "Content-Type": "application/json" },
+        "jsonBody": {
+          "type": "https://tools.ietf.org/html/rfc9110#section-15.5.5",
+          "title": "Not Found",
+          "status": 404
+        }
+      }
+    },
+    {
+      "priority": 1,
+      "name": "GET /work-orders/vehicles/:id",
+      "request": {
+        "method": "GET",
+        "urlPath": "/work-orders/vehicles/b5c3e821-7f4a-4e2d-9d16-3a8f50c1d742"
+      },
+      "response": {
+        "status": 200,
+        "headers": { "Content-Type": "application/json" },
+        "jsonBody": {
+          "id": "b5c3e821-7f4a-4e2d-9d16-3a8f50c1d742",
+          "manufacturer": "Toyota",
+          "model": "Corolla",
+          "color": "White",
+          "year": "2021",
+          "licensePlate": "ABC1D23",
+          "chassis": "9BWZZZ377VT004251",
+          "ownerId": "a3f1d62e-9c84-4b17-bf90-2e56c3a07d48"
+        }
+      }
+    },
+    {
+      "priority": 10,
+      "name": "GET /work-orders/vehicles/:id - not found",
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/work-orders/vehicles/[^/]+"
+      },
+      "response": {
+        "status": 404,
+        "headers": { "Content-Type": "application/json" },
+        "jsonBody": {
+          "type": "https://tools.ietf.org/html/rfc9110#section-15.5.5",
+          "title": "Not Found",
+          "status": 404
+        }
+      }
+    }
+  ]
+}
