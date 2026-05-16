@@ -1,0 +1,93 @@
+{
+  "mappings": [
+    {
+      "priority": 1,
+      "name": "GET /identity/users/administrator",
+      "request": {
+        "method": "GET",
+        "urlPath": "/identity/users/db27b85d-b0f3-4300-bb45-7841f0d11617"
+      },
+      "response": {
+        "status": 200,
+        "headers": { "Content-Type": "application/json" },
+        "jsonBody": {
+          "id": "db27b85d-b0f3-4300-bb45-7841f0d11617",
+          "fullName": "Administrator User",
+          "cpfNumber": "12345678909",
+          "role": "ADMINISTRATOR"
+        }
+      }
+    },
+    {
+      "priority": 1,
+      "name": "GET /identity/users/attendant",
+      "request": {
+        "method": "GET",
+        "urlPath": "/identity/users/c2a83e5a-27c7-440a-97e3-86234eebb3c7"
+      },
+      "response": {
+        "status": 200,
+        "headers": { "Content-Type": "application/json" },
+        "jsonBody": {
+          "id": "c2a83e5a-27c7-440a-97e3-86234eebb3c7",
+          "fullName": "Attendant User",
+          "cpfNumber": "98765432100",
+          "role": "ATTENDANT"
+        }
+      }
+    },
+    {
+      "priority": 1,
+      "name": "GET /identity/users/mechanic",
+      "request": {
+        "method": "GET",
+        "urlPath": "/identity/users/4c3b8777-6c4a-4bf3-8ad5-aad48981f7f2"
+      },
+      "response": {
+        "status": 200,
+        "headers": { "Content-Type": "application/json" },
+        "jsonBody": {
+          "id": "4c3b8777-6c4a-4bf3-8ad5-aad48981f7f2",
+          "fullName": "Mechanic User",
+          "cpfNumber": "11144477735",
+          "role": "MECHANIC"
+        }
+      }
+    },
+    {
+      "priority": 1,
+      "name": "GET /identity/users/customer",
+      "request": {
+        "method": "GET",
+        "urlPath": "/identity/users/a3f1d62e-9c84-4b17-bf90-2e56c3a07d48"
+      },
+      "response": {
+        "status": 200,
+        "headers": { "Content-Type": "application/json" },
+        "jsonBody": {
+          "id": "a3f1d62e-9c84-4b17-bf90-2e56c3a07d48",
+          "fullName": "Customer User",
+          "cpfNumber": "17625318010",
+          "role": "CUSTOMER_USER"
+        }
+      }
+    },
+    {
+      "priority": 10,
+      "name": "GET /identity/users/:id - not found",
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/identity/users/[^/]+"
+      },
+      "response": {
+        "status": 404,
+        "headers": { "Content-Type": "application/json" },
+        "jsonBody": {
+          "type": "https://tools.ietf.org/html/rfc9110#section-15.5.5",
+          "title": "Not Found",
+          "status": 404
+        }
+      }
+    }
+  ]
+}
