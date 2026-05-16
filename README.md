@@ -22,13 +22,13 @@ Set-ExecutionPolicy Unrestricted
 Execute o script de inicialização na raiz do projeto:
 
 ```powershell
-.\init.ps1
+.\init-compose.ps1
 ```
 
 O script clona os repositórios dos microsserviços, gera o arquivo `.env` com os caminhos locais e realiza o build das imagens. Ao final, suba o ambiente com:
 
 ```powershell
-docker compose up -d
+.\start-compose.ps1
 ```
 
 ## Serviços disponíveis
@@ -99,11 +99,12 @@ A interface administrativa em [http://localhost:9091/__admin/mappings](http://lo
 
 ```plain
 ├── docker-compose.yml
-├── init.ps1
+├── init-compose.ps1
+├── start-compose.ps1
 ├── start-wiremock.ps1   # inicia o servidor WireMock com os mapeamentos locais
 ├── services.psd1        # lista de repositórios e configurações
-├── local.psd1           # configurações locais, gerado pelo init.ps1
-├── .env                 # variáveis de ambiente, gerado pelo init.ps1
+├── local.psd1           # configurações locais, gerado pelo init-compose.ps1
+├── .env                 # variáveis de ambiente, gerado pelo init-compose.ps1
 ├── localstack/          # scripts de inicialização do LocalStack
 ├── nginx/
 │   ├── nginx.conf
