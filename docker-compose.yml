@@ -1,0 +1,152 @@
+name: fiap-mechanics
+
+services:
+  billing:
+    build: ${MECHANICS_BILLING_PATH:?}
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Server=mssql;Database=mechanics-billing;User Id=sa;Password=2%r6dZ6Xk@g3;TrustServerCertificate=True;
+      - EmailSenderOptions__SmtpServer=mailpit
+      - AwsCredentials__LocalstackUrl=http://localstack:4566
+    volumes:
+      - billing:/home/app
+    depends_on:
+      mssql:
+        condition: service_healthy
+      mailpit:
+        condition: service_healthy
+      localstack:
+        condition: service_healthy
+
+  execution:
+    build: ${MECHANICS_EXECUTION_PATH:?}
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Server=mssql;Database=mechanics-execution;User Id=sa;Password=2%r6dZ6Xk@g3;TrustServerCertificate=True;
+      - AwsCredentials__LocalstackUrl=http://localstack:4566
+    volumes:
+      - execution:/home/app
+    depends_on:
+      mssql:
+        condition: service_healthy
+      localstack:
+        condition: service_healthy
+
+  identity:
+    build: ${MECHANICS_IDENTITY_PATH:?}
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Server=mssql;Database=mechanics-identity;User Id=sa;Password=2%r6dZ6Xk@g3;TrustServerCertificate=True;
+      - EmailSenderOptions__SmtpServer=mailpit
+      - AwsCredentials__LocalstackUrl=http://localstack:4566
+    volumes:
+      - identity:/home/app
+    depends_on:
+      mssql:
+        condition: service_healthy
+      mailpit:
+        condition: service_healthy
+      localstack:
+        condition: service_healthy
+
+  work-orders:
+    build: ${MECHANICS_WORK_ORDERS_PATH:?}
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Server=mssql;Database=mechanics-work-orders;User Id=sa;Password=2%r6dZ6Xk@g3;TrustServerCertificate=True;
+      - AwsCredentials__LocalstackUrl=http://localstack:4566
+    volumes:
+      - work-orders:/home/app
+    depends_on:
+      mssql:
+        condition: service_healthy
+      localstack:
+        condition: service_healthy
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2025-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=2%r6dZ6Xk@g3
+      - TZ=America/Sao_Paulo
+      - MSSQL_PID=Express
+    volumes:
+      - mssql:/var/opt/mssql
+    healthcheck:
+      test: '/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P "$$MSSQL_SA_PASSWORD" -Q "SELECT 1"'
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  localstack:
+    image: localstack/localstack:3
+    environment:
+      - SERVICES=sqs,lambda,dynamodb
+      - DYNAMODB_SHARE_DB=1
+      - DYNAMODB_IN_MEMORY=1
+    volumes:
+      - ./localstack:/etc/localstack/init/ready.d:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    healthcheck:
+      test: 'curl -f http://localhost:4566/_localstack/health'
+      interval: 2s
+      timeout: 5s
+      retries: 10
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "${NGINX_PORT:-8080}:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/index.html:/usr/share/nginx/html/index.html:ro
+    depends_on:
+      - billing
+      - execution
+      - identity
+      - work-orders
+      - mailpit
+      - dynamodb-admin
+
+  mailpit:
+    image: axllent/mailpit:v1.28
+    environment:
+      - MP_DATABASE=/data/mailpit.db
+      - MP_MAX_AGE=7d
+      - TZ=America/Sao_Paulo
+      - MP_SMTP_AUTH=postmaster@mechanics.com:xFCsMj6a4NWbZgr5
+      - MP_SMTP_AUTH_ALLOW_INSECURE=true
+    ports:
+      - "8081:8025"
+    volumes:
+      - mailpit:/data
+    healthcheck:
+      test: 'wget --spider -q http://localhost:8025/api/v1/info'
+      interval: 2s
+      timeout: 5s
+      retries: 10
+
+  dynamodb-admin:
+    image: aaronshaf/dynamodb-admin
+    environment:
+      - DYNAMO_ENDPOINT=http://localstack:4566
+    ports:
+      - "8082:8001"
+    depends_on:
+      localstack:
+        condition: service_healthy
+
+volumes:
+  billing:
+    name: fiap-mechanics-billing
+  execution:
+    name: fiap-mechanics-execution
+  identity:
+    name: fiap-mechanics-identity
+  work-orders:
+    name: fiap-mechanics-work-orders
+  mssql:
+    name: fiap-mechanics-mssql
+  mailpit:
+    name: fiap-mechanics-mailpit

@@ -1,0 +1,168 @@
+</head>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>FIAP Mechanics</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background-color: #1a1d23;
+            color: #c9d1d9;
+            min-height: 100vh;
+            padding: 48px 16px;
+        }
+
+        .container {
+            max-width: 620px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #e6edf3;
+            margin-bottom: 4px;
+        }
+
+        header p {
+            font-size: 0.9rem;
+            color: #6e7681;
+        }
+
+        section h2 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #6e7681;
+            margin-bottom: 12px;
+        }
+
+        ul {
+            list-style: none;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background-color: #21262d;
+            border-bottom: 1px solid #30363d;
+            transition: background-color 0.15s;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        li:hover {
+            background-color: #262c36;
+        }
+
+        li span {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+            font-size: 0.875rem;
+            color: #e6edf3;
+        }
+
+        .links {
+            display: flex;
+            gap: 16px;
+        }
+
+        a {
+            font-size: 0.8rem;
+            color: #58a6ff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #79c0ff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>FIAP Mechanics</h1>
+            <p>Local development environment</p>
+        </header>
+
+        <section>
+            <h2>Services</h2>
+            <ul>
+                <li>
+                    <span>billing</span>
+                    <div class="links">
+                        <a href="/billing/swagger" target="_blank">Swagger</a>
+                        <a href="https://github.com/FIAP-POS-TECH-13SOAT-MECHANICS/mechanics-billing"
+                            target="_blank">Repository</a>
+                    </div>
+                </li>
+                <li>
+                    <span>execution</span>
+                    <div class="links">
+                        <a href="/execution/swagger" target="_blank">Swagger</a>
+                        <a href="https://github.com/FIAP-POS-TECH-13SOAT-MECHANICS/mechanics-execution"
+                            target="_blank">Repository</a>
+                    </div>
+                </li>
+                <li>
+                    <span>identity</span>
+                    <div class="links">
+                        <a href="/identity/swagger" target="_blank">Swagger</a>
+                        <a href="https://github.com/FIAP-POS-TECH-13SOAT-MECHANICS/mechanics-identity"
+                            target="_blank">Repository</a>
+                    </div>
+                </li>
+                <li>
+                    <span>work-orders</span>
+                    <div class="links">
+                        <a href="/work-orders/swagger" target="_blank">Swagger</a>
+                        <a href="https://github.com/FIAP-POS-TECH-13SOAT-MECHANICS/mechanics-work-orders"
+                            target="_blank">Repository</a>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Tools</h2>
+            <ul>
+                <li>
+                    <span>Mailpit</span>
+                    <div class="links">
+                        <a href="http://localhost:8081" target="_blank">Open</a>
+                    </div>
+                </li>
+                <li>
+                    <span>DynamoDB Admin</span>
+                    <div class="links">
+                        <a href="http://localhost:8082" target="_blank">Open</a>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </div>
+</body>
+
+</html>
