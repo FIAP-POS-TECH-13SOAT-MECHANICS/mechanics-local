@@ -11,6 +11,7 @@ if (-not (Test-Path $localConfig)) {
 }
 
 Write-Host -ForegroundColor Yellow "Starting environment..."
+docker compose stop nginx
 docker compose up -d
 if ($LASTEXITCODE -ne 0) { throw "docker compose up failed" }
 
