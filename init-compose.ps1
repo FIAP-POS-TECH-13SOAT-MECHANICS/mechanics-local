@@ -16,6 +16,7 @@ foreach ($service in $repoDef.Services) {
         $branch = git -C $clonePath branch --show-current
         Write-Host -ForegroundColor Green "'$($service.Name)' already exists, updating branch '$branch'..."
         git -C $clonePath pull
+        if ($LASTEXITCODE -ne 0) { throw "Failed to pull '$($service.Name)'" }
     }
 
     $localPaths[$service.Name] = $clonePath

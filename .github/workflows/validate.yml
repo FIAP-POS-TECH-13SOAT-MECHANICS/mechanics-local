@@ -13,7 +13,7 @@ jobs:
 
       - name: Generate .env
         run: |
-          grep -oP "(?<=Name = \")([^\"]+)" services.psd1 | while read name; do
+          grep "Name" services.psd1 | grep -oP "(?<=\")[^\"]+(?=\")" | while read name; do
             prefix=$(echo "$name" | tr '[:lower:]-' '[:upper:]_')
             echo "${prefix}_PATH=/placeholder"
           done > .env
