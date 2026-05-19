@@ -1,9 +1,9 @@
-$RootDir     = $PSScriptRoot
+$RootDir = $PSScriptRoot
 $ServicesDef = Join-Path $RootDir "services.psd1"
 $LocalConfig = Join-Path $RootDir "local.psd1"
-$EnvFile     = Join-Path $RootDir ".env"
+$EnvFile = Join-Path $RootDir ".env"
 
-$repoDef    = Import-PowerShellDataFile $ServicesDef
+$repoDef = Import-PowerShellDataFile $ServicesDef
 $localPaths = @{}
 
 foreach ($service in $repoDef.Services) {
@@ -13,7 +13,10 @@ foreach ($service in $repoDef.Services) {
         Write-Host -ForegroundColor Yellow "Cloning '$($service.Name)'..."
         git clone $service.RepositoryUrl $clonePath
     } else {
-        Write-Host -ForegroundColor Green "'$($service.Name)' already exists, skipping clone."
+        $branch = git -C $clonePath branch --show-current
+        Write-Host -ForegroundColor Green "'$($service.Name)' already exists, updating branch '$branch'..."
+        git -C $clonePath pull
+        if ($LASTEXITCODE -ne 0) { throw "Failed to pull '$($service.Name)'" }
     }
 
     $localPaths[$service.Name] = $clonePath
@@ -33,7 +36,7 @@ $lines += @("    }", "}")
 $lines | Set-Content -Path $LocalConfig -Encoding UTF8
 
 # Gerar .env
-$envLines = @("# Gerado automaticamente por init.ps1")
+$envLines = @("# Gerado automaticamente por init-compose.ps1")
 foreach ($service in $repoDef.Services) {
     $envPrefix = ($service.Name -replace "-", "_").ToUpper()
     $envLines += "$($envPrefix)_PATH=$($localPaths[$service.Name])"
