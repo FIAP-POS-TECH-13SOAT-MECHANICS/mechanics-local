@@ -11,8 +11,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Rename .env.example
-        run: cp .env.example .env
+      - name: Generate .env
+        run: |
+          grep -oP "(?<=Name = \")([^\"]+)" services.psd1 | while read name; do
+            prefix=$(echo "$name" | tr '[:lower:]-' '[:upper:]_')
+            echo "${prefix}_PATH=/placeholder"
+          done > .env
 
       - name: Validate docker-compose
         run: docker compose config

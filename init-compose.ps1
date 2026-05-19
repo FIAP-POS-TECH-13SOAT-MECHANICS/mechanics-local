@@ -35,7 +35,7 @@ $lines += @("    }", "}")
 $lines | Set-Content -Path $LocalConfig -Encoding UTF8
 
 # Gerar .env
-$envLines = @("# Gerado automaticamente por init.ps1")
+$envLines = @("# Gerado automaticamente por init-compose.ps1")
 foreach ($service in $repoDef.Services) {
     $envPrefix = ($service.Name -replace "-", "_").ToUpper()
     $envLines += "$($envPrefix)_PATH=$($localPaths[$service.Name])"
