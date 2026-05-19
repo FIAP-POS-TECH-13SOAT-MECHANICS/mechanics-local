@@ -31,6 +31,12 @@ O script clona os repositórios dos microsserviços, gera o arquivo `.env` com o
 .\start-compose.ps1
 ```
 
+Para gerar um token JWT, use o comando abaixo:
+
+```powershell
+.\new-token.ps1
+```
+
 ## Serviços disponíveis
 
 Todos os serviços são acessíveis através de [http://localhost:8080](http://localhost:8080).
@@ -101,7 +107,8 @@ A interface administrativa em [http://localhost:9091/__admin/mappings](http://lo
 ├── docker-compose.yml
 ├── init-compose.ps1
 ├── start-compose.ps1
-├── start-wiremock.ps1   # inicia o servidor WireMock com os mapeamentos locais
+├── start-wiremock.ps1
+├── new-token.ps1        # gera um token JWT
 ├── services.psd1        # lista de repositórios e configurações
 ├── local.psd1           # configurações locais, gerado pelo init-compose.ps1
 ├── .env                 # variáveis de ambiente, gerado pelo init-compose.ps1
